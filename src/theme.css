@@ -1,0 +1,201 @@
+:root {
+    color-scheme: dark;
+
+    /* Typography */
+    --font-heading: "Antonio", Verdana, sans-serif;
+    --font-body: Verdana, Geneva, Tahoma, sans-serif;
+
+    /* Main backgrounds */
+    --color-bg: #000000;
+    --color-bg-soft: #050505;
+
+    /* Surfaces */
+    --color-surface: #090909;
+    --color-surface-2: #0d0d0d;
+    --color-surface-3: #121212;
+    --color-surface-4: #181818;
+
+    /* Text */
+    --color-heading: #ffffff;
+    --color-text: #d8d8d8;
+    --color-muted: #a3a3a3;
+    --color-subtle: #707070;
+    --color-text-muted: #858585;
+
+    /* Borders */
+    --color-border: #242424;
+    --color-border-soft: #181818;
+    --color-border-strong: #353535;
+
+    /* Cards */
+    --color-card: #0a0a0a;
+    --color-card-hover: #111111;
+    --color-card-active: #171717;
+
+    /* Accent - monochrome */
+    --color-accent: #ffffff;
+    --color-accent-hover: #e5e5e5;
+    --color-accent-soft: rgba(255, 255, 255, 0.07);
+    --color-accent-medium: rgba(255, 255, 255, 0.12);
+
+    /* Buttons */
+    --color-button: #ffffff;
+    --color-button-hover: #e7e7e7;
+    --color-button-text: #000000;
+
+    --color-button-dark: #101010;
+    --color-button-dark-hover: #181818;
+    --color-button-dark-text: #f5f5f5;
+
+    /* Header and sidebar */
+    --color-header-bg: rgba(0, 0, 0, 0.88);
+    --color-sidebar-bg: #030303;
+
+    /* Inputs */
+    --color-input-bg: #080808;
+    --color-input-hover: #0d0d0d;
+    --color-input-focus: #101010;
+
+    /* Code */
+    --color-code-bg: #0c0c0c;
+    --color-pill-bg: #101010;
+
+    /* Overlay */
+    --color-overlay: rgba(0, 0, 0, 0.72);
+
+    /* Selection */
+    --color-selection-bg: #ffffff;
+    --color-selection-text: #000000;
+
+    /* Scrollbar */
+    --color-scrollbar-track: transparent;
+    --color-scrollbar-thumb: #2d2d2d;
+    --color-scrollbar-thumb-hover: #464646;
+
+    /* Status */
+    --color-success: #d0d0d0;
+    --color-warning: #bdbdbd;
+    --color-danger: #9c9c9c;
+
+    --color-success-soft: rgba(255, 255, 255, 0.06);
+    --color-warning-soft: rgba(255, 255, 255, 0.06);
+    --color-danger-soft: rgba(255, 255, 255, 0.06);
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.8);
+
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.42);
+
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.48);
+
+    --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.58);
+
+    --shadow-card:
+        0 1px 0 rgba(255, 255, 255, 0.025), 0 8px 24px rgba(0, 0, 0, 0.4),
+        0 24px 64px rgba(0, 0, 0, 0.32);
+
+    --shadow-card-hover:
+        0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.55),
+        0 28px 80px rgba(0, 0, 0, 0.42);
+
+    --shadow-focus: 0 0 0 3px rgba(255, 255, 255, 0.1);
+
+    /* Radius */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-round: 999px;
+
+    /* Motion */
+    --transition-fast: 140ms ease;
+    --transition-normal: 220ms ease;
+    --transition-slow: 320ms ease;
+
+    /* Layout */
+    --header-height: 64px;
+    --sidebar-width: 300px;
+    --content-max-width: 1440px;
+}
+
+[data-theme="light"] {
+    color-scheme: light;
+
+    --color-bg: #ffffff;
+    --color-bg-soft: #fafafa;
+
+    --color-surface: #ffffff;
+    --color-surface-2: #f8f8f8;
+    --color-surface-3: #f1f1f1;
+    --color-surface-4: #e9e9e9;
+
+    --color-heading: #000000;
+    --color-text: #292929;
+    --color-muted: #606060;
+    --color-subtle: #858585;
+    --color-text-muted: #737373;
+
+    --color-border: #dedede;
+    --color-border-soft: #ededed;
+    --color-border-strong: #c7c7c7;
+
+    --color-card: #ffffff;
+    --color-card-hover: #f7f7f7;
+    --color-card-active: #eeeeee;
+
+    --color-accent: #000000;
+    --color-accent-hover: #202020;
+    --color-accent-soft: rgba(0, 0, 0, 0.05);
+    --color-accent-medium: rgba(0, 0, 0, 0.1);
+
+    --color-button: #000000;
+    --color-button-hover: #202020;
+    --color-button-text: #ffffff;
+
+    --color-button-dark: #f2f2f2;
+    --color-button-dark-hover: #e9e9e9;
+    --color-button-dark-text: #111111;
+
+    --color-header-bg: rgba(255, 255, 255, 0.9);
+    --color-sidebar-bg: #fafafa;
+
+    --color-input-bg: #ffffff;
+    --color-input-hover: #fafafa;
+    --color-input-focus: #f7f7f7;
+
+    --color-code-bg: #f5f5f5;
+    --color-pill-bg: #f1f1f1;
+
+    --color-overlay: rgba(0, 0, 0, 0.35);
+
+    --color-selection-bg: #000000;
+    --color-selection-text: #ffffff;
+
+    --color-scrollbar-thumb: #c5c5c5;
+    --color-scrollbar-thumb-hover: #9d9d9d;
+
+    --color-success: #343434;
+    --color-warning: #555555;
+    --color-danger: #707070;
+
+    --color-success-soft: rgba(0, 0, 0, 0.05);
+    --color-warning-soft: rgba(0, 0, 0, 0.05);
+    --color-danger-soft: rgba(0, 0, 0, 0.05);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.06);
+
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.08);
+
+    --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.1);
+
+    --shadow-card:
+        0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.06);
+
+    --shadow-card-hover:
+        0 1px 2px rgba(0, 0, 0, 0.05), 0 18px 44px rgba(0, 0, 0, 0.09);
+
+    --shadow-focus: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}

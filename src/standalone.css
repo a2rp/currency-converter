@@ -1,0 +1,25 @@
+.standaloneApp {
+    display: flex;
+
+    width: 100%;
+    min-width: 0;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0 24px;
+
+    color: var(--color-text);
+    background: var(--color-bg);
+
+    overflow: hidden;
+}
+
+@media (max-width: 900px) {
+    .standaloneApp {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 0 16px;
+
+        overflow: visible;
+    }
+}

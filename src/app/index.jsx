@@ -18,8 +18,10 @@ const CurrencyConverter = () => {
     const [isCurrenciesLoading, setIsCurrenciesLoading] = useState(true);
     const [isRateLoading, setIsRateLoading] = useState(true);
 
-    const [error, setError] = useState("");
+    const [currencyError, setCurrencyError] = useState("");
+    const [rateError, setRateError] = useState("");
     const [copied, setCopied] = useState(false);
+    const [rateRefresh, setRateRefresh] = useState(0);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -39,6 +41,7 @@ const CurrencyConverter = () => {
                 const data = await response.json();
 
                 const currencyList = data
+                    .filter((item) => item.type === "currency")
                     .map((item) => ({
                         code: item.iso_code,
                         name: item.name,
@@ -51,7 +54,7 @@ const CurrencyConverter = () => {
                 setCurrencies(currencyList);
             } catch (requestError) {
                 if (requestError.name !== "AbortError") {
-                    setError("Unable to load currency list.");
+                    setCurrencyError("Unable to load currency list.");
                 }
             } finally {
                 if (!controller.signal.aborted) {
@@ -74,7 +77,7 @@ const CurrencyConverter = () => {
             if (fromCurrency === toCurrency) {
                 setRate(1);
                 setRateDate("");
-                setError("");
+                setRateError("");
                 setIsRateLoading(false);
 
                 return;
@@ -82,7 +85,9 @@ const CurrencyConverter = () => {
 
             try {
                 setIsRateLoading(true);
-                setError("");
+                setRate(null);
+                setRateDate("");
+                setRateError("");
 
                 const response = await fetch(
                     `${API_BASE}/v2/rate/${fromCurrency}/${toCurrency}`,
@@ -96,13 +101,16 @@ const CurrencyConverter = () => {
                 }
 
                 const data = await response.json();
+                if (!Number.isFinite(data.rate) || data.rate <= 0) {
+                    throw new Error("The exchange rate response was invalid.");
+                }
 
                 setRate(data.rate);
                 setRateDate(data.date || "");
             } catch (requestError) {
                 if (requestError.name !== "AbortError") {
                     setRate(null);
-                    setError(
+                    setRateError(
                         "Exchange rate is unavailable right now. Please try again.",
                     );
                 }
@@ -118,24 +126,19 @@ const CurrencyConverter = () => {
         return () => {
             controller.abort();
         };
-    }, [fromCurrency, toCurrency]);
+    }, [fromCurrency, toCurrency, rateRefresh]);
 
     const numericAmount = Number(amount);
+    const isAmountValid = Number.isFinite(numericAmount) && numericAmount >= 0;
 
     const convertedAmount = useMemo(() => {
-        if (
-            !Number.isFinite(numericAmount) ||
-            numericAmount < 0 ||
-            rate === null
-        ) {
-            return null;
-        }
+        if (!isAmountValid || rate === null) return null;
 
         return numericAmount * rate;
-    }, [numericAmount, rate]);
+    }, [isAmountValid, numericAmount, rate]);
 
     const formatNumber = (value) => {
-        if (!Number.isFinite(value)) return "0";
+        if (!Number.isFinite(value)) return "—";
 
         return new Intl.NumberFormat("en-IN", {
             maximumFractionDigits: 6,
@@ -148,21 +151,7 @@ const CurrencyConverter = () => {
     };
 
     const handleRefresh = () => {
-        setFromCurrency((current) => {
-            const value = current;
-
-            setToCurrency((target) => {
-                if (value === target) {
-                    setRate(1);
-                }
-
-                return target;
-            });
-
-            return value;
-        });
-
-        window.location.reload();
+        setRateRefresh((current) => current + 1);
     };
 
     const handleCopy = async () => {
@@ -201,8 +190,9 @@ const CurrencyConverter = () => {
                     <h1 className={styles.title}>Convert currencies</h1>
 
                     <p className={styles.text}>
-                        Convert between global currencies using current exchange
-                        rates.
+                        Convert between global currencies using the latest
+                        available reference rates. Rates update daily and are
+                        not live trading quotes.
                     </p>
                 </div>
 
@@ -249,9 +239,10 @@ const CurrencyConverter = () => {
 
                 <div className={styles.currencySection}>
                     <div className={styles.currencyCard}>
-                        <span className={styles.cardLabel}>From</span>
+                        <label className={styles.cardLabel} htmlFor="from-currency">From</label>
 
                         <select
+                            id="from-currency"
                             value={fromCurrency}
                             disabled={isCurrenciesLoading}
                             onChange={(event) =>
@@ -289,9 +280,10 @@ const CurrencyConverter = () => {
                     </button>
 
                     <div className={styles.currencyCard}>
-                        <span className={styles.cardLabel}>To</span>
+                        <label className={styles.cardLabel} htmlFor="to-currency">To</label>
 
                         <select
+                            id="to-currency"
                             value={toCurrency}
                             disabled={isCurrenciesLoading}
                             onChange={(event) =>
@@ -330,6 +322,8 @@ const CurrencyConverter = () => {
 
                         {isRateLoading ? (
                             <strong>Loading rate...</strong>
+                        ) : !isAmountValid ? (
+                            <strong>Enter a valid non-negative amount</strong>
                         ) : convertedAmount !== null ? (
                             <strong>
                                 {formatNumber(convertedAmount)}
@@ -355,7 +349,8 @@ const CurrencyConverter = () => {
                     </button>
                 </div>
 
-                {error && <div className={styles.error}>{error}</div>}
+                {currencyError && <div className={styles.error} role="alert">{currencyError}</div>}
+                {rateError && <div className={styles.error} role="alert">{rateError}</div>}
 
                 <div className={styles.rateDetails}>
                     <div className={styles.rateItem}>
@@ -385,7 +380,7 @@ const CurrencyConverter = () => {
                     <div className={styles.rateItem}>
                         <span>Rate Date</span>
 
-                        <strong>{rateDate || "Latest available"}</strong>
+                        <strong>{rateDate || (fromCurrency === toCurrency ? "Not applicable" : "Latest available")}</strong>
                     </div>
                 </div>
             </div>

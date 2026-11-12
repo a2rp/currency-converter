@@ -10,7 +10,7 @@ A browser-based currency converter built with React and Vite. Select a currency 
 - Copy the converted result to the clipboard.
 - Refresh rates without resetting the selected currencies or amount.
 
-Rates come from the [Frankfurter API](https://frankfurter.dev/) and update daily. They are reference rates, not live trading quotes. Requests run from the browser and require an internet connection; entered amounts are converted locally and are not uploaded or saved.
+Rates come from the [Frankfurter API](https://frankfurter.dev/) and update as providers publish them. They are reference rates, not live trading quotes. Requests run from the browser and require an internet connection; entered amounts are converted locally and are not uploaded or saved.
 
 ## Development
 

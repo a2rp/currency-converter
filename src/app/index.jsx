@@ -128,8 +128,12 @@ const CurrencyConverter = () => {
         };
     }, [fromCurrency, toCurrency, rateRefresh]);
 
-    const numericAmount = Number(amount);
-    const isAmountValid = Number.isFinite(numericAmount) && numericAmount >= 0;
+    const amountText = amount.trim();
+    const numericAmount = amountText ? Number(amountText) : Number.NaN;
+    const isAmountValid =
+        amountText !== "" &&
+        Number.isFinite(numericAmount) &&
+        numericAmount >= 0;
 
     const convertedAmount = useMemo(() => {
         if (!isAmountValid || rate === null) return null;
@@ -191,8 +195,8 @@ const CurrencyConverter = () => {
 
                     <p className={styles.text}>
                         Convert between global currencies using the latest
-                        available reference rates. Rates update daily and are
-                        not live trading quotes.
+                        available reference rates. Rates update when providers
+                        publish them and are not live trading quotes.
                     </p>
                 </div>
 
@@ -334,7 +338,9 @@ const CurrencyConverter = () => {
                         )}
 
                         <p>
-                            {formatNumber(numericAmount || 0)} {fromCurrency}
+                            {isAmountValid
+                                ? `${formatNumber(numericAmount)} ${fromCurrency}`
+                                : `— ${fromCurrency}`}
                         </p>
                     </div>
 
@@ -380,7 +386,16 @@ const CurrencyConverter = () => {
                     <div className={styles.rateItem}>
                         <span>Rate Date</span>
 
-                        <strong>{rateDate || (fromCurrency === toCurrency ? "Not applicable" : "Latest available")}</strong>
+                        <strong>
+                            {rateDate ||
+                                (fromCurrency === toCurrency
+                                    ? "Not applicable"
+                                    : isRateLoading
+                                      ? "Loading..."
+                                      : rateError || rate === null
+                                        ? "Unavailable"
+                                        : "Date unavailable")}
+                        </strong>
                     </div>
                 </div>
             </div>
